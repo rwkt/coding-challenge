@@ -9,6 +9,7 @@ use App\Entity\Product;
 use Doctrine\Instantiator\Instantiator;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -23,7 +24,7 @@ class ProductType extends AbstractType
         $builder
             ->add('name', TextType::class)
             ->add('sku', TextType::class)
-            ->add('quantity', NumberType::class)
+            ->add('quantity', IntegerType::class)
             ->add('price', NumberType::class)
             ->add('category', EntityType::class, [
                 'class' => Category::class,
@@ -42,6 +43,7 @@ class ProductType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Product::class,
             'csrf_protection' => false,
+            'allow_extra_fields' => true,
             'empty_data' => function (FormInterface $form) {
                 $name = $form->get('name')->getData();
                 $sku = $form->get('sku')->getData();

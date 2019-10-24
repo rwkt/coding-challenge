@@ -65,7 +65,7 @@ class Product
     /**
      * @Assert\NotNull(message="Quantity cannot be empty")
      *
-     * @ORM\Column(type="float", nullable=false)
+     * @ORM\Column(type="decimal", nullable=false)
      *
      * @Serializer\Groups(groups={"product"})
      */
@@ -110,7 +110,7 @@ class Product
         return $this->quantity;
     }
 
-    public function setQuantity(?int $quantity): void
+    public function setQuantity(int $quantity): void
     {
         $this->quantity = $quantity;
     }
@@ -123,5 +123,15 @@ class Product
     public function setCategory(?Category $category): void
     {
         $this->category = $category;
+    }
+
+    public function getPrice(): ?float
+    {
+        return $this->price;
+    }
+
+    public function setPrice(?float $price): void
+    {
+        $this->price = $price;
     }
 }

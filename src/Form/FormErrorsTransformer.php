@@ -13,11 +13,11 @@ class FormErrorsTransformer
     public function fromForm(FormInterface $form): array
     {
         $errors = [];
-        foreach ($form->getErrors(true, false) as $error) {
+        foreach ($form->getErrors(true, false) as $key => $error) {
             if ($error instanceof FormError) {
                 $errors[] = $error->getMessage();
             } else {
-                $errors[] = trim((string)$error);
+                $errors[] = trim((string) $error);
             }
         }
 

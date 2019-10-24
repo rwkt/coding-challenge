@@ -51,7 +51,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * Duplicated because of bug in older Symfony versions, fixed in 4.1
+     * Duplicated because of bug in older Symfony versions, fixed in 4.1.
      *
      * @Route("", methods={"POST"})
      * @Route("/", methods={"POST"})
