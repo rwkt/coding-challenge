@@ -24,18 +24,21 @@ use Symfony\Component\Routing\Annotation\Route;
 class ProductController extends AbstractController
 {
     private $formErrorsTransformer;
+    private $serializer;
 
-    public function __construct(FormErrorsTransformer $formErrorsTransformer)
+    public function __construct(FormErrorsTransformer $formErrorsTransformer, SerializerInterface $serializer)
     {
         $this->formErrorsTransformer = $formErrorsTransformer;
+        $this->serializer = $serializer;
     }
 
     /**
+     * @Route("", methods={"GET"})
      * @Route("/", methods={"GET"})
      */
-    public function list(SerializerInterface $serializer, ProductRepository $repository): JsonResponse
+    public function list(ProductRepository $repository): JsonResponse
     {
-        $data = $serializer->serialize($repository->findAll(), 'json', SerializationContext::create()->setGroups(['product']));
+        $data = $this->serializer->serialize($repository->findAll(), 'json', $this->createContext());
 
         return JsonResponse::fromJsonString($data);
     }
@@ -43,9 +46,9 @@ class ProductController extends AbstractController
     /**
      * @Route("/{id}", methods={"GET"})
      */
-    public function view(Product $product, SerializerInterface $serializer): JsonResponse
+    public function view(Product $product): JsonResponse
     {
-        $data = $serializer->serialize($product, 'json');
+        $data = $this->serializer->serialize($product, 'json', $this->createContext());
 
         return JsonResponse::fromJsonString($data);
     }
@@ -67,7 +70,9 @@ class ProductController extends AbstractController
             $em->persist($product);
             $em->flush();
 
-            return new JsonResponse([], Response::HTTP_CREATED);
+            $data = $this->serializer->serialize($product, 'json', $this->createContext());
+
+            return JsonResponse::fromJsonString($data, Response::HTTP_CREATED);
         }
 
         $errors = $this->formErrorsTransformer->fromForm($form);
@@ -88,7 +93,9 @@ class ProductController extends AbstractController
             $em->persist($product);
             $em->flush();
 
-            return new JsonResponse([], Response::HTTP_CREATED);
+            $data = $this->serializer->serialize($product, 'json', $this->createContext());
+
+            return JsonResponse::fromJsonString($data);
         }
 
         $errors = $this->formErrorsTransformer->fromForm($form);
@@ -107,5 +114,10 @@ class ProductController extends AbstractController
         $em->flush();
 
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
+    }
+
+    private function createContext(): SerializationContext
+    {
+        return SerializationContext::create()->setGroups(['product']);
     }
 }

@@ -65,7 +65,7 @@ class Product
     /**
      * @Assert\NotNull(message="Quantity cannot be empty")
      *
-     * @ORM\Column(type="decimal", nullable=false)
+     * @ORM\Column(type="float", nullable=false)
      *
      * @Serializer\Groups(groups={"product"})
      */
