@@ -10,7 +10,6 @@ use App\DataFixtures\ProductFixtures;
 use App\DataFixtures\UserFixtures;
 use Generator;
 use Liip\TestFixturesBundle\Test\FixturesTrait;
-use Symfony\Component\HttpFoundation\Response;
 use function array_merge;
 use function json_decode;
 
@@ -47,9 +46,9 @@ class ProductControllerTest extends AbstractWebTestCase
     public function testCreateWithoutValidToken(): void
     {
         $response = $this->post('/product', ['name' => 'Test']);
-        $this->assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertTrue($response->isForbidden());
         $response = $this->post('/product', ['name' => 'Test'], 'Invalid token');
-        $this->assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertTrue($response->isForbidden());
     }
 
     /**
@@ -62,7 +61,7 @@ class ProductControllerTest extends AbstractWebTestCase
     public function testCreateWithInvalidData(array $data): void
     {
         $response = $this->post('/product', $data, 'foo_token');
-        $this->assertEquals(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+        $this->assertTrue($response->isClientError());
     }
 
     /**
@@ -71,7 +70,7 @@ class ProductControllerTest extends AbstractWebTestCase
     public function testUpdateWithoutValidToken(): void
     {
         $response = $this->put('/product/1', ['name' => 'Test'], 'Invalid token');
-        $this->assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertTrue($response->isForbidden());
     }
 
     /**
@@ -82,7 +81,7 @@ class ProductControllerTest extends AbstractWebTestCase
     public function testUpdateWithInvalidData(array $data): void
     {
         $response = $this->put('/product/1', $data, 'foo_token');
-        $this->assertEquals(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+        $this->assertTrue($response->isClientError());
     }
 
     /**
@@ -94,7 +93,7 @@ class ProductControllerTest extends AbstractWebTestCase
     {
         $validData = $this->getValidData();
         $response = $this->put('/product/1', $validData, 'foo_token');
-        $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
+        $this->assertTrue($response->isOk());
         $product = json_decode($response->getContent(), true);
         $this->assertEquals('Valid name', $product['name']);
     }
@@ -105,7 +104,7 @@ class ProductControllerTest extends AbstractWebTestCase
     public function testDeleteWithInvalidToken(): void
     {
         $response = $this->delete('/product/1', 'Invalid token');
-        $this->assertEquals(Response::HTTP_FORBIDDEN, $response->getStatusCode());
+        $this->assertTrue($response->isForbidden());
     }
 
     /**
@@ -116,10 +115,10 @@ class ProductControllerTest extends AbstractWebTestCase
     public function testDelete(): void
     {
         $response = $this->delete('/product/1', 'foo_token');
-        $this->assertEquals(Response::HTTP_NO_CONTENT, $response->getStatusCode());
+        $this->assertTrue($response->isEmpty());
 
         $response = $this->get('/product/1', 'foo_token');
-        $this->assertEquals(Response::HTTP_NOT_FOUND, $response->getStatusCode());
+        $this->assertTrue($response->isNotFound());
     }
 
     public function provideInvalidData(): Generator
