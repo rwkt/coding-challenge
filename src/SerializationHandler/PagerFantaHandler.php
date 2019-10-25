@@ -7,7 +7,6 @@ namespace App\SerializationHandler;
 use JMS\Serializer\GraphNavigatorInterface;
 use JMS\Serializer\Handler\SubscribingHandlerInterface;
 use JMS\Serializer\JsonSerializationVisitor;
-use JMS\Serializer\SerializationContext;
 use Pagerfanta\Pagerfanta;
 use Traversable;
 use function iterator_to_array;
@@ -29,7 +28,7 @@ class PagerFantaHandler implements SubscribingHandlerInterface
         ];
     }
 
-    public function serializePagerFanta(JsonSerializationVisitor $visitor, Pagerfanta $pager, array $type, SerializationContext $context): array
+    public function serializePagerFanta(JsonSerializationVisitor $visitor, Pagerfanta $pager, array $type): array
     {
         $results = $pager->getCurrentPageResults();
         if ($results instanceof Traversable) {
