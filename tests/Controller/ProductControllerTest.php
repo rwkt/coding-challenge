@@ -65,6 +65,18 @@ class ProductControllerTest extends AbstractWebTestCase
     }
 
     /**
+     * @see ProductController::create()
+     */
+    public function testCreate(): void
+    {
+        $validData = $this->getValidData();
+        $response = $this->post('/product', $validData, 'foo_token');
+        $this->assertEquals(201, $response->getStatusCode());
+        $product = json_decode($response->getContent(), true);
+        $this->assertEquals('Valid name', $product['name']);
+    }
+
+    /**
      * @see ProductController::update()
      */
     public function testUpdateWithoutValidToken(): void
