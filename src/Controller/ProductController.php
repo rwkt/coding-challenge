@@ -33,12 +33,15 @@ class ProductController extends AbstractController
     }
 
     /**
+     * Duplicated because of bug in older Symfony versions, fixed in 4.1.
+     *
      * @Route("", methods={"GET"})
      * @Route("/", methods={"GET"})
      */
-    public function list(ProductRepository $repository): JsonResponse
+    public function list(ProductRepository $repository, Request $request): JsonResponse
     {
-        $data = $this->serializer->serialize($repository->findAll(), 'json', $this->createContext());
+        $pager = $repository->paginate($request->query->getInt('page', 1));
+        $data = $this->serializer->serialize($pager, 'json', $this->createContext());
 
         return JsonResponse::fromJsonString($data);
     }

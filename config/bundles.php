@@ -18,4 +18,5 @@ return [
     JMS\SerializerBundle\JMSSerializerBundle::class => ['all' => true],
     SensioLabs\RichModelForms\RichModelFormsBundle::class => ['all' => true],
     Liip\TestFixturesBundle\LiipTestFixturesBundle::class => ['dev' => true, 'test' => true],
+    WhiteOctober\PagerfantaBundle\WhiteOctoberPagerfantaBundle::class => ['all' => true],
 ];
