@@ -57,6 +57,7 @@ abstract class AbstractWebTestCase extends WebTestCase
         }
 
         $client = self::createClient();
+        $client->followRedirects(true);
         $client->request($method, $url,
             [],
             [],

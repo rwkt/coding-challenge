@@ -1,3 +1,9 @@
-controllers:
-    resource: ../../src/Controller/
+products:
+    resource: ../../src/Controller/Product
     type: annotation
+    prefix: /product
+
+categories:
+    resource: ../../src/Controller/Category
+    type: annotation
+    prefix: /category

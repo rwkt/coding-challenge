@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\SerializationHandler;
 
+use function iterator_to_array;
 use JMS\Serializer\GraphNavigatorInterface;
 use JMS\Serializer\Handler\SubscribingHandlerInterface;
 use JMS\Serializer\JsonSerializationVisitor;
 use Pagerfanta\Pagerfanta;
 use Traversable;
-use function iterator_to_array;
 
 class PagerFantaHandler implements SubscribingHandlerInterface
 {
