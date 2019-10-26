@@ -44,6 +44,9 @@ class FormInterfaceResolver implements ArgumentValueResolverInterface
         $class = $annotation->class;
         $dataParameter = $annotation->data;
 
+        if ($dataParameter && !$request->attributes->has($dataParameter)) {
+            throw new InvalidArgumentException(sprintf('Missing parameter "%s" in method signature.', $dataParameter));
+        }
         $data = $dataParameter ? $request->attributes->get($dataParameter) : null;
         $form = $this->formFactory->create($class, $data);
         $form->submit($request->request->all());
