@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Annotation\Form;
 use App\Entity\Product;
 use App\Form\FormErrorsTransformer;
 use App\Form\Type\ProductType;
@@ -12,6 +13,7 @@ use App\Service\Serializer;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -62,11 +64,11 @@ class ProductController extends AbstractController
      * @Route("/", methods={"POST"})
      *
      * @IsGranted("ROLE_USER")
+     *
+     * @Form(class=ProductType::class)
      */
-    public function create(Request $request, EntityManagerInterface $em): JsonResponse
+    public function create(FormInterface $form, EntityManagerInterface $em): JsonResponse
     {
-        $form = $this->createForm(ProductType::class);
-        $form->submit($request->request->all());
         if ($form->isSubmitted() && $form->isValid()) {
             $product = $form->getData();
             $em->persist($product);
@@ -86,11 +88,10 @@ class ProductController extends AbstractController
      * @Route("/{id}", methods={"PUT", "PATCH"})
      *
      * @IsGranted("ROLE_USER")
+     * @Form(class=ProductType::class, data="product")
      */
-    public function update(Request $request, Product $product, EntityManagerInterface $em): JsonResponse
+    public function update(FormInterface $form, Product $product, EntityManagerInterface $em): JsonResponse
     {
-        $form = $this->createForm(ProductType::class, $product);
-        $form->submit($request->request->all());
         if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($product);
             $em->flush();

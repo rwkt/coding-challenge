@@ -5,36 +5,18 @@ declare(strict_types=1);
 namespace App\Tests\Controller;
 
 use App\Controller\ProductController;
-use App\DataFixtures\CategoryFixtures;
-use App\DataFixtures\ProductFixtures;
-use App\DataFixtures\UserFixtures;
 use Generator;
-use Liip\TestFixturesBundle\Test\FixturesTrait;
 use function array_merge;
 use function json_decode;
 
 class ProductControllerTest extends AbstractWebTestCase
 {
-    use FixturesTrait;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-        $this->loadFixtures([
-            UserFixtures::class,
-            CategoryFixtures::class,
-            ProductFixtures::class,
-        ]);
-    }
-
     /**
      * @see ProductController::list()
      */
     public function testList(): void
     {
-        $client = self::createClient();
-        $client->request('GET', '/product');
-        $response = $client->getResponse();
+        $response = $this->get('/product');
         $this->assertTrue($response->isOk());
     }
 
@@ -46,9 +28,9 @@ class ProductControllerTest extends AbstractWebTestCase
     public function testCreateWithoutValidToken(): void
     {
         $response = $this->post('/product', ['name' => 'Test']);
-        $this->assertTrue($response->isForbidden());
+        $this->assertEquals(401, $response->getStatusCode());
         $response = $this->post('/product', ['name' => 'Test'], 'Invalid token');
-        $this->assertTrue($response->isForbidden());
+        $this->assertEquals(403, $response->getStatusCode());
     }
 
     /**
@@ -74,6 +56,11 @@ class ProductControllerTest extends AbstractWebTestCase
         $this->assertEquals(201, $response->getStatusCode());
         $product = json_decode($response->getContent(), true);
         $this->assertEquals('Valid name', $product['name']);
+
+        // assert product was created; there were 4 in fixtures
+        $response = $this->get('/product');
+        $data = json_decode($response->getContent(), true);
+        $this->assertEquals(5, $data['total']);
     }
 
     /**
