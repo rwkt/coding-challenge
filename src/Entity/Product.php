@@ -22,7 +22,6 @@ class Product
      * @ORM\Column(type="integer")
      *
      * @Serializer\Groups(groups={"product"})
-     *
      */
     private ?int $id = null;
 
