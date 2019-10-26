@@ -16,7 +16,7 @@ use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
 
 class ApiAuthenticator extends AbstractGuardAuthenticator
 {
-    private $userRepository;
+    private UserRepository $userRepository;
 
     public function __construct(UserRepository $userRepository)
     {
@@ -37,7 +37,8 @@ class ApiAuthenticator extends AbstractGuardAuthenticator
 
     public function getUser($credentials, UserProviderInterface $userProvider): ?UserInterface
     {
-        $apiToken = $credentials['token'];
+        /** @var string|null $apiToken */
+        $apiToken = $credentials['token'] ?? null;
         if (null === $apiToken) {
             return null;
         }

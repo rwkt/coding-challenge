@@ -16,7 +16,7 @@ use function sprintf;
 
 class FormInterfaceResolver implements ArgumentValueResolverInterface
 {
-    private $formFactory;
+    private FormFactoryInterface $formFactory;
 
     public function __construct(FormFactoryInterface $formFactory)
     {
@@ -47,6 +47,7 @@ class FormInterfaceResolver implements ArgumentValueResolverInterface
         if ($dataParameter && !$request->attributes->has($dataParameter)) {
             throw new InvalidArgumentException(sprintf('Missing parameter "%s" in method signature.', $dataParameter));
         }
+        /** @var object|null $data */
         $data = $dataParameter ? $request->attributes->get($dataParameter) : null;
         $form = $this->formFactory->create($class, $data);
         $form->submit($request->request->all());

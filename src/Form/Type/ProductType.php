@@ -22,11 +22,25 @@ class ProductType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name', TextType::class)
-            ->add('sku', TextType::class)
-            ->add('quantity', IntegerType::class)
-            ->add('price', NumberType::class)
+            ->add('name', TextType::class, [
+                'get_value' => fn(Product $product) => $product->getName(),
+                'update_value' => fn(string $name, Product $product) => $product->setName($name),
+            ])
+            ->add('sku', TextType::class, [
+                'get_value' => fn(Product $product) => $product->getSku(),
+                'update_value' => fn(string $sku, Product $product) => $product->setSku($sku),
+            ])
+            ->add('quantity', IntegerType::class, [
+                'get_value' => fn(Product $product) => $product->getQuantity(),
+                'update_value' => fn(int $quantity, Product $product) => $product->setQuantity($quantity),
+            ])
+            ->add('price', NumberType::class, [
+                'get_value' => fn(Product $product) => $product->getPrice(),
+                'update_value' => fn(float $price, Product $product) => $product->setPrice($price),
+            ])
             ->add('category', EntityType::class, [
+                'get_value' => fn(Product $product) => $product->getCategory(),
+                'update_value' => fn(Category $category, Product $product) => $product->setCategory($category),
                 'class' => Category::class,
                 'invalid_message' => 'Invalid category value',
             ])
@@ -44,19 +58,7 @@ class ProductType extends AbstractType
             'data_class' => Product::class,
             'csrf_protection' => false,
             'allow_extra_fields' => true,
-            'empty_data' => function (FormInterface $form) {
-                $name = $form->get('name')->getData();
-                $sku = $form->get('sku')->getData();
-                $quantity = $form->get('quantity')->getData();
-                $category = $form->get('category')->getData();
-                $price = $form->get('price')->getData();
-
-                try {
-                    return new Product($name, $sku, $price, $category, $quantity);
-                } catch (TypeError $error) {
-                    return (new Instantiator())->instantiate(Product::class);
-                }
-            },
+            'factory' => fn(string $name, string $sku, int $quantity, float $price, Category $category) => new Product($name, $sku, $price, $category, $quantity),
         ]);
     }
 }

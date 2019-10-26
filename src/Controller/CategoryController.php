@@ -13,10 +13,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/category")
+ *
+ * @psalm-suppress PropertyNotSetInConstructor
  */
 class CategoryController extends AbstractController
 {
-    private $serializer;
+    private Serializer $serializer;
 
     public function __construct(Serializer $serializer)
     {

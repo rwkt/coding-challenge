@@ -25,6 +25,7 @@ class ProductFixtures extends Fixture implements DependentFixtureInterface
         $manager->flush();
     }
 
+    /** @return Generator<array{string, string, float, int, string}> */
     private function getData(): Generator
     {
         yield ['Pong', 'A0001', 69.99, 20, 'category_games'];

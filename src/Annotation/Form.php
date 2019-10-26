@@ -14,10 +14,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ConfigurationInterface;
  */
 class Form implements ConfigurationInterface
 {
-    /** @required */
-    public $class;
+    /**
+     * @psalm-suppress PropertyNotSetInConstructor
+     * @required
+     */
+    public string $class;
 
-    public $data = null;
+    /** @psalm-suppress PropertyNotSetInConstructor */
+    public ?string $data = null;
 
     public function getAliasName(): string
     {

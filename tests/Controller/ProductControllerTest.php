@@ -54,12 +54,12 @@ class ProductControllerTest extends AbstractWebTestCase
         $validData = $this->getValidData();
         $response = $this->post('/product', $validData, 'foo_token');
         $this->assertEquals(201, $response->getStatusCode());
-        $product = json_decode($response->getContent(), true);
+        $product = json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
         $this->assertEquals('Valid name', $product['name']);
 
         // assert product was created; there were 4 in fixtures
         $response = $this->get('/product');
-        $data = json_decode($response->getContent(), true);
+        $data = json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
         $this->assertEquals(5, $data['total']);
     }
 
@@ -93,7 +93,7 @@ class ProductControllerTest extends AbstractWebTestCase
         $validData = $this->getValidData();
         $response = $this->put('/product/1', $validData, 'foo_token');
         $this->assertTrue($response->isOk());
-        $product = json_decode($response->getContent(), true);
+        $product = json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR);
         $this->assertEquals('Valid name', $product['name']);
     }
 

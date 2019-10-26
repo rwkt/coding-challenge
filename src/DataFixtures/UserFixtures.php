@@ -21,6 +21,7 @@ class UserFixtures extends Fixture
         $manager->flush();
     }
 
+    /** @return Generator<array{string, string, string}> */
     private function getData(): Generator
     {
         yield ['Test Foo', 'foo-test@foo.com', 'foo_token'];

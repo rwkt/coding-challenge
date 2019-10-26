@@ -22,8 +22,9 @@ class Product
      * @ORM\Column(type="integer")
      *
      * @Serializer\Groups(groups={"product"})
+     *
      */
-    private $id;
+    private ?int $id = null;
 
     /**
      * @Assert\NotNull(message="Name cannot be empty")
@@ -31,7 +32,7 @@ class Product
      *
      * @Serializer\Groups(groups={"product"})
      */
-    private $name;
+    private string $name;
 
     /**
      * @Assert\NotNull(message="SKU cannot be empty")
@@ -41,7 +42,7 @@ class Product
      *
      * @Serializer\Groups(groups={"product"})
      */
-    private $sku;
+    private string $sku;
 
     /**
      * @Assert\Type(type=Category::class, message="Nope")
@@ -51,7 +52,7 @@ class Product
      *
      * @Serializer\Groups(groups={"product"})
      */
-    private $category;
+    private Category $category;
 
     /**
      * @Assert\NotNull(message="Quantity cannot be empty")
@@ -60,7 +61,7 @@ class Product
      *
      * @Serializer\Groups(groups={"product"})
      */
-    private $quantity;
+    private int $quantity;
 
     /**
      * @Assert\NotNull(message="Quantity cannot be empty")
@@ -69,7 +70,7 @@ class Product
      *
      * @Serializer\Groups(groups={"product"})
      */
-    private $price;
+    private float $price;
 
     public function __construct(string $name, string $sku, float $price, Category $category, int $quantity)
     {
@@ -85,27 +86,27 @@ class Product
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
 
-    public function setName(?string $name): void
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    public function getSku(): ?string
+    public function getSku(): string
     {
         return $this->sku;
     }
 
-    public function setSku(?string $sku): void
+    public function setSku(string $sku): void
     {
         $this->sku = $sku;
     }
 
-    public function getQuantity(): ?int
+    public function getQuantity(): int
     {
         return $this->quantity;
     }
@@ -115,22 +116,22 @@ class Product
         $this->quantity = $quantity;
     }
 
-    public function getCategory(): ?Category
+    public function getCategory(): Category
     {
         return $this->category;
     }
 
-    public function setCategory(?Category $category): void
+    public function setCategory(Category $category): void
     {
         $this->category = $category;
     }
 
-    public function getPrice(): ?float
+    public function getPrice(): float
     {
         return $this->price;
     }
 
-    public function setPrice(?float $price): void
+    public function setPrice(float $price): void
     {
         $this->price = $price;
     }

@@ -20,20 +20,20 @@ class User implements UserInterface
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private ?int $id = null;
 
     /** @ORM\Column(type="string", nullable=false) */
-    private $name;
+    private string $name;
 
     /** @ORM\Column(type="string", unique=true, nullable=false) */
-    private $email;
+    private string $email;
 
     /**
      * @var string|null
      *
      * @ORM\Column(type="string", unique=true, nullable=true)
      */
-    private $apiToken;
+    private ?string $apiToken = null;
 
     public function __construct(string $name, string $email)
     {

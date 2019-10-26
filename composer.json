@@ -1,34 +1,37 @@
 {
     "type": "project",
     "license": "proprietary",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "require": {
-        "php": "^7.1",
+        "php": "^7.4",
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-json": "*",
         "jms/serializer-bundle": "^3.4",
         "qandidate/symfony-json-request-transformer": "^1.3",
         "sensio/framework-extra-bundle": "^5.1",
-        "sensiolabs-de/rich-model-forms-bundle": "^0.3.0",
-        "symfony/asset": "3.4.*",
-        "symfony/console": "3.4.*",
-        "symfony/dotenv": "3.4.*",
-        "symfony/expression-language": "3.4.*",
+        "symfony/asset": "4.3.*",
+        "symfony/console": "4.3.*",
+        "symfony/dotenv": "4.3.*",
+        "symfony/expression-language": "4.3.*",
         "symfony/flex": "^1.3.1",
-        "symfony/form": "3.4.*",
-        "symfony/framework-bundle": "3.4.*",
+        "symfony/form": "4.3.*",
+        "symfony/framework-bundle": "4.3.*",
         "symfony/monolog-bundle": "^3.1",
         "symfony/orm-pack": "*",
-        "symfony/process": "3.4.*",
-        "symfony/security-bundle": "3.4.*",
+        "symfony/process": "4.3.*",
+        "symfony/security-bundle": "4.3.*",
         "symfony/serializer-pack": "*",
         "symfony/swiftmailer-bundle": "^3.1",
-        "symfony/translation": "3.4.*",
-        "symfony/twig-bundle": "3.4.*",
-        "symfony/validator": "3.4.*",
-        "symfony/web-link": "3.4.*",
-        "symfony/yaml": "3.4.*",
-        "white-october/pagerfanta-bundle": "^1.2"
+        "symfony/translation": "4.3.*",
+        "symfony/twig-bundle": "4.3.*",
+        "symfony/validator": "4.3.*",
+        "symfony/web-link": "4.3.*",
+        "symfony/yaml": "4.3.*",
+        "white-october/pagerfanta-bundle": "^1.2",
+        "hitechcoding/strict-form-mapper-bundle": "dev-master",
+        "vimeo/psalm": "dev-arrow-functions"
     },
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.2",
@@ -37,10 +40,16 @@
         "symfony/maker-bundle": "^1.0",
         "symfony/profiler-pack": "*",
         "symfony/test-pack": "*",
-        "symfony/var-dumper": "3.4.*",
-        "symfony/web-server-bundle": "3.4.*",
+        "symfony/var-dumper": "4.3.*",
+        "symfony/web-server-bundle": "4.3.*",
         "symplify/easy-coding-standard": "^6.1"
     },
+    "repositories": [
+        {
+            "type": "github",
+            "url": "https://github.com/hitechcoding/strict-form-mapper-bundle"
+        }
+    ],
     "config": {
         "preferred-install": {
             "*": "dist"
@@ -82,7 +91,7 @@
     "extra": {
         "symfony": {
             "allow-contrib": true,
-            "require": "3.4.*"
+            "require": "4.3.*"
         }
     }
 }

@@ -21,11 +21,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/product")
+ *
+ * @psalm-suppress PropertyNotSetInConstructor
  */
 class ProductController extends AbstractController
 {
-    private $formErrorsTransformer;
-    private $serializer;
+    private FormErrorsTransformer $formErrorsTransformer;
+    private Serializer $serializer;
 
     public function __construct(FormErrorsTransformer $formErrorsTransformer, Serializer $serializer)
     {
@@ -34,10 +36,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * Duplicated because of bug in older Symfony versions, fixed in 4.1.
-     *
-     * @Route("", methods={"GET"})
-     * @Route("/", methods={"GET"})
+     * @Route(methods={"GET"})
      */
     public function list(ProductRepository $repository, Request $request): JsonResponse
     {
@@ -58,10 +57,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * Duplicated because of bug in older Symfony versions, fixed in 4.1.
-     *
-     * @Route("", methods={"POST"})
-     * @Route("/", methods={"POST"})
+     * @Route(methods={"POST"})
      *
      * @IsGranted("ROLE_USER")
      *
@@ -70,6 +66,7 @@ class ProductController extends AbstractController
     public function create(FormInterface $form, EntityManagerInterface $em): JsonResponse
     {
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var Product $product */
             $product = $form->getData();
             $em->persist($product);
             $em->flush();

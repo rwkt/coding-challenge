@@ -22,6 +22,7 @@ class CategoryFixtures extends Fixture
         $manager->flush();
     }
 
+    /** @return Generator<array{string, string}> */
     private function getData(): Generator
     {
         yield ['Games', 'category_games'];

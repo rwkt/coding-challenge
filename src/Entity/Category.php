@@ -22,14 +22,14 @@ class Category
      *
      * @Serializer\Groups(groups={"category"})
      */
-    private $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column(type="string", nullable=false)
      *
      * @Serializer\Groups(groups={"category", "product"})
      */
-    private $name;
+    private string $name;
 
     public function __construct(string $name)
     {
