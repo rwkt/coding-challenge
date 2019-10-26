@@ -61,7 +61,7 @@ abstract class AbstractWebTestCase extends WebTestCase
             [],
             [],
             $headers,
-            json_encode($body)
+            json_encode($body, JSON_THROW_ON_ERROR, 512)
         );
 
         return $client->getResponse();
