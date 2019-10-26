@@ -13,7 +13,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/{id}", methods={"DELETE"})
- *
  * @IsGranted("ROLE_USER")
  */
 class DeleteAction

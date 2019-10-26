@@ -23,8 +23,6 @@ class ViewAction
 
     public function __invoke(Product $product): JsonResponse
     {
-        $data = $this->serializer->serialize($product, 'product');
-
-        return JsonResponse::fromJsonString($data);
+        return $this->serializer->createResponse($product, ['product']);
     }
 }

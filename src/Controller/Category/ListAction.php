@@ -27,8 +27,7 @@ class ListAction
     public function __invoke(Request $request): JsonResponse
     {
         $pager = $this->repository->paginate($request->query->getInt('page', 1));
-        $data = $this->serializer->serialize($pager, 'category');
 
-        return JsonResponse::fromJsonString($data);
+        return $this->serializer->createResponse($pager, ['category']);
     }
 }
