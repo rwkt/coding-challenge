@@ -37,19 +37,17 @@ class CreateAction
 
     public function __invoke(FormInterface $form): JsonResponse
     {
-        if ($form->isSubmitted() && $form->isValid()) {
-            /** @var Product $product */
-            $product = $form->getData();
-            $this->em->persist($product);
-            $this->em->flush();
+        if (!$form->isValid()) {
+            return $this->formErrorsTransformer->createJsonResponse($form);
 
-            $data = $this->serializer->serialize($product, 'product');
-
-            return JsonResponse::fromJsonString($data, Response::HTTP_CREATED);
         }
+        /** @var Product $product */
+        $product = $form->getData();
+        $this->em->persist($product);
+        $this->em->flush();
 
-        $errors = $this->formErrorsTransformer->fromForm($form);
+        $data = $this->serializer->serialize($product, 'product');
 
-        return new JsonResponse($errors, Response::HTTP_BAD_REQUEST);
+        return JsonResponse::fromJsonString($data, Response::HTTP_CREATED);
     }
 }

@@ -18,8 +18,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/{id}", methods={"PUT", "PATCH"})
- *
  * @IsGranted("ROLE_USER")
+ *
  * @Form(class=ProductType::class, data="product")
  */
 class UpdateAction
@@ -37,17 +37,15 @@ class UpdateAction
 
     public function __invoke(FormInterface $form, Product $product): JsonResponse
     {
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->em->persist($product);
-            $this->em->flush();
-
-            $data = $this->serializer->serialize($product, 'product');
-
-            return JsonResponse::fromJsonString($data);
+        if (!$form->isValid()) {
+            return $this->formErrorsTransformer->createJsonResponse($form);
         }
 
-        $errors = $this->formErrorsTransformer->fromForm($form);
+        $this->em->persist($product);
+        $this->em->flush();
 
-        return new JsonResponse($errors, Response::HTTP_BAD_REQUEST);
+        $data = $this->serializer->serialize($product, 'product');
+
+        return JsonResponse::fromJsonString($data);
     }
 }
