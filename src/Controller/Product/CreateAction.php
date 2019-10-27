@@ -15,7 +15,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("", methods={"POST"})
+ * @Route(methods={"POST"})
  * @IsGranted("ROLE_USER")
  *
  * @Form(class=ProductType::class)
@@ -29,13 +29,12 @@ class CreateAction
         $this->repository = $repository;
     }
 
+    /** @param FormInterface<Product> $form */
     public function __invoke(FormInterface $form)
     {
         if (!$form->isValid()) {
             return new FormErrorsResponse($form);
-
         }
-        /** @var Product $product */
         $product = $form->getData();
         $this->repository->save($product);
 

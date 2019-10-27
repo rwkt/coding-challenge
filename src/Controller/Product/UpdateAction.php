@@ -29,6 +29,7 @@ class UpdateAction
         $this->repository = $repository;
     }
 
+    /** @param FormInterface<Product> $form */
     public function __invoke(FormInterface $form, Product $product)
     {
         if (!$form->isValid()) {
