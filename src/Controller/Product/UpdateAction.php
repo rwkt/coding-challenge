@@ -7,11 +7,11 @@ namespace App\Controller\Product;
 use App\Annotation\Form;
 use App\Form\Type\ProductType;
 use App\Entity\Product;
-use App\Service\Serializer;
+use App\Response\ApiResponse;
+use App\Response\FormErrorsResponse;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -22,24 +22,22 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class UpdateAction
 {
-    private Serializer $serializer;
     private EntityManagerInterface $em;
 
-    public function __construct(Serializer $serializer, EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em)
     {
-        $this->serializer = $serializer;
         $this->em = $em;
     }
 
-    public function __invoke(FormInterface $form, Product $product): JsonResponse
+    public function __invoke(FormInterface $form, Product $product)
     {
         if (!$form->isValid()) {
-            return $this->serializer->createFormErrorsResponse($form);
+            return new FormErrorsResponse($form);
         }
 
         $this->em->persist($product);
         $this->em->flush();
 
-        return $this->serializer->createResponse($product, ['product']);
+        return new ApiResponse($product, ['product']);
     }
 }

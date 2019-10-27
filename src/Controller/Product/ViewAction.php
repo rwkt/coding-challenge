@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Product;
 
 use App\Entity\Product;
-use App\Service\Serializer;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Response\ApiResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -14,15 +13,8 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ViewAction
 {
-    private Serializer $serializer;
-
-    public function __construct(Serializer $serializer)
+    public function __invoke(Product $product): ApiResponse
     {
-        $this->serializer = $serializer;
-    }
-
-    public function __invoke(Product $product): JsonResponse
-    {
-        return $this->serializer->createResponse($product, ['product']);
+        return new ApiResponse($product, ['product']);
     }
 }

@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Product;
 
 use App\Repository\ProductRepository;
-use App\Service\Serializer;
-use Symfony\Component\HttpFoundation\JsonResponse;
+use App\Response\ApiResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -15,19 +14,17 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ListAction
 {
-    private Serializer $serializer;
     private ProductRepository $repository;
 
-    public function __construct(Serializer $serializer, ProductRepository $repository)
+    public function __construct(ProductRepository $repository)
     {
-        $this->serializer = $serializer;
         $this->repository = $repository;
     }
 
-    public function __invoke(Request $request): JsonResponse
+    public function __invoke(Request $request): ApiResponse
     {
         $pager = $this->repository->paginate($request->query->getInt('page', 1));
 
-        return $this->serializer->createResponse($pager, ['product']);
+        return new ApiResponse($pager, ['product']);
     }
 }

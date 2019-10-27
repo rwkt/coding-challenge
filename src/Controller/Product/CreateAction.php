@@ -7,7 +7,8 @@ namespace App\Controller\Product;
 use App\Annotation\Form;
 use App\Form\Type\ProductType;
 use App\Entity\Product;
-use App\Service\Serializer;
+use App\Response\ApiResponse;
+use App\Response\FormErrorsResponse;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Form\FormInterface;
@@ -21,19 +22,17 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CreateAction
 {
-    private Serializer $serializer;
     private EntityManagerInterface $em;
 
-    public function __construct(Serializer $serializer, EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
-        $this->serializer = $serializer;
     }
 
     public function __invoke(FormInterface $form)
     {
         if (!$form->isValid()) {
-            return $this->serializer->createFormErrorsResponse($form);
+            return new FormErrorsResponse($form);
 
         }
         /** @var Product $product */
@@ -41,6 +40,6 @@ class CreateAction
         $this->em->persist($product);
         $this->em->flush();
 
-        return $this->serializer->createResponse($product, ['product'], 201);
+        return new ApiResponse($product, ['product'], 201);
     }
 }
